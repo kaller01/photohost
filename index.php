@@ -12,7 +12,7 @@ $statuscode = 200;
 $secret = getSecret();
 $filename = "";
 
-$auth = getallheaders()["Authorization"] ?? "";
+$auth = $_POST["Authorization"] ?? "";
 if ($auth == "Token " . $secret) {
 
     // Check if image file is a actual image or fake image
@@ -38,7 +38,7 @@ if ($auth == "Token " . $secret) {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
             $status = "The file has been uploaded.";
             $filename = htmlspecialchars(basename($_FILES["fileToUpload"]["name"]));
-            resizeall($target_file,$filename);
+            $paths = resizeall($target_file,$filename);
         } else {
             $status = "Sorry, there was an error uploading your file.";
             $statuscode = 500;
@@ -49,7 +49,5 @@ if ($auth == "Token " . $secret) {
     $status = "No auth";
 }
 
-
-
-echo json_encode(["status" => $status, "filename" => $filename]);
+echo json_encode(["status" => $status, "filename" => $filename, "paths" => $paths]);
 http_response_code($statuscode);
