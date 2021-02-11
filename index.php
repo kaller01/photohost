@@ -1,5 +1,6 @@
 <?php
  require_once "resize.php";
+ require_once "secret.php";
 
 $target_dir = "./";
 //TODO Error handling without image.
@@ -8,7 +9,7 @@ $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 $status = "";
 $statuscode = 200;
-$secret = "hello";
+$secret = getSecret();
 $filename = "";
 
 $auth = getallheaders()["Authorization"] ?? "";
